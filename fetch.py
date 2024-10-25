@@ -1,12 +1,13 @@
 import requests
 import csv
 
+# Set your GitHub access token
 GITHUB_TOKEN = "top_secret_token_do_not_touch"
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-def get_users_in_basel():
+def get_users_in_moscow():
     users = []
-    query = "location:Basel+followers:>10"
+    query = "location:Moscow+followers:>50"
     page = 1
     per_page = 100
     total_users = 0
@@ -83,19 +84,20 @@ def get_user_repos(username):
     return repos
 
 def save_users_to_csv(users):
-    with open('users.csv', mode='w', newline='') as file:
+    with open('moscow_users.csv', mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['login', 'name', 'company', 'location', 'email', 'hireable', 'bio', 'public_repos', 'followers', 'following', 'created_at'])
         writer.writeheader()
         writer.writerows(users)
 
 def save_repos_to_csv(repos):
-    with open('repositories.csv', mode='w', newline='') as file:
+    with open('moscow_repositories.csv', mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=['login', 'full_name', 'created_at', 'stargazers_count', 'watchers_count', 'language', 'has_projects', 'has_wiki', 'license_name'])
         writer.writeheader()
         writer.writerows(repos)
 
 if __name__ == "__main__":
-    users = get_users_in_basel()
+    # Get users in Moscow
+    users = get_users_in_moscow()
     save_users_to_csv(users)
 
     all_repos = []
@@ -105,4 +107,3 @@ if __name__ == "__main__":
 
     save_repos_to_csv(all_repos)
     print("Done")
-
